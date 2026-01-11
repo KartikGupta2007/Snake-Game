@@ -159,3 +159,14 @@ section{
 .modal .game-over h2{
     font-size: var(--size-md);
 }
+
+.footer{
+    position: fixed;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    font-size: var(--size-sm);
+    color: var(--text-primary-color);
+    opacity: 0.7;
+    bottom: 8px;
+    right: 8px;
+}
