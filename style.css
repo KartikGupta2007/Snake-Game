@@ -10,10 +10,11 @@ html,body{
 
 :root{
     /* background colors; */
-    --bg-primary-color: #232323;
-
+    --bg-primary-color: #0c0c0c;
+    --bg-fill-color: #fdfdfc;
+    --bg-food-color: #ff6347;
     /* Text colors */
-    --text-primary-color: #eeeeee;
+    --text-primary-color: #f0f0f0;
 
     /* Size variables */
     --size-very-small : 1px;
@@ -22,6 +23,7 @@ html,body{
     --size-xs : 8px;
     --size-sm : 16px;
     --size-md : 24px;
+    /* // to be changed */
     --size-lg : 32px;
     --size-xl : 48px;
     --size-2xl : 64px;
@@ -67,8 +69,21 @@ section{
     display:flex;
     flex-direction: column;
     gap : var(--space-md);
-
+    
 }
+
+
+.btn{
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn:hover{
+    transform: scale(1.1);
+}
+
 .Info-Panel{
     width: 100%;
     display: flex;
@@ -89,12 +104,59 @@ section{
     border: var(--space-xxxs) solid var(--border-primary-color);
     flex-grow: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(var(--size-lg), 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(var(--size-lg), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--size-xl), 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(var(--size-xl), 1fr));
 }
 
 .block{
-    height: var(--size-lg);
-    width: var(--size-lg);
     border: var(--size-very-small) solid var(--border-primary-color);
+    border-radius: 35%;
+}
+
+.fill{
+    background-color: var(--bg-fill-color);
+}
+
+.food{
+    background-color: var(--bg-food-color);
+}
+
+
+.modal{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #35353587;
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal .start-game{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    text-align: center;
+}
+
+.modal .game-over{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    text-align: center;
+    gap: var(--space-md);
+}
+
+.modal .game-over h1{
+    font-size: var(--size-2xl);
+
+}
+
+.modal .game-over h2{
+    font-size: var(--size-md);
 }
