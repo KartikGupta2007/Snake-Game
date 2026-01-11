@@ -1,3 +1,4 @@
+let flag = true;
 const board = document.querySelector('.Board-Container');
 const blockHeight = 48;
 const blockWidth = 48;
@@ -7,7 +8,13 @@ const score = document.querySelector('.Current-Score-Value');
 const maxScore = document.querySelector('.Max-Score-Value');
 maxScore.innerText = maxScoreValue;
 
-
+// Reload page when window width changes
+let windowWidth = window.innerWidth;
+window.addEventListener('resize', function(){
+    if(window.innerWidth !== windowWidth){
+        location.reload();
+    }
+});
 
 // Creating Grid!!!
 let cols = Math.floor(board.clientWidth / blockWidth);
@@ -45,6 +52,7 @@ blocksArr[`${food.x}-${food.y}`].classList.add('food');
 
 //function to create random food
 function createFood(){
+    flag = false;
     blocksArr[`${food.x}-${food.y}`].classList.remove('food');
     food = {x:Math.floor(Math.random()*rows),y:Math.floor(Math.random()*cols)};
     // Ensure food does not spawn on the snake
@@ -99,6 +107,7 @@ let x = function(){
     });
     
     if(collision){
+        addPastScore(scorecount)
         end();
         return;
     }
@@ -190,11 +199,75 @@ restartButton.addEventListener('click',function(){
     x();
 });
 
+const pastScorePage = document.querySelector('.past-scores-screen');
+pastScorePage.style.display = 'none';
+const pastScoreButton = document.querySelectorAll('.btn-past-score');
+pastScoreButton.forEach(function(button){
+    button.addEventListener('click', function(){
+        pastScorePage.style.display = 'flex';
+        modal.style.display = 'flex';
+        startGame.style.display = 'none';
+        gameOver.style.display = 'none';
+        displayPastScores();
+    });
+});
 
-// Reload page when window width changes
-let windowWidth = window.innerWidth;
-window.addEventListener('resize', function(){
-    if(window.innerWidth !== windowWidth){
-        location.reload();
+
+let pastScore = JSON.parse(localStorage.getItem('pastScores')) || [];
+function addPastScore(score){
+    const timestamp = new Date().toLocaleString('en-IN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
+    pastScore.unshift({score: score, time: timestamp});
+    if(pastScore.length > 10){
+        pastScore.pop();
     }
+    localStorage.setItem('pastScores', JSON.stringify(pastScore));
+};
+
+function displayPastScores(){
+    pastScore = JSON.parse(localStorage.getItem('pastScores')) || [];
+    const scoresList = document.querySelector('.scores-list');
+    if(pastScore.length === 0){
+        scoresList.innerHTML = '<p class="no-scores-message">No past scores yet. Play to set some records!</p>';
+        return;
+    }
+    scoresList.innerHTML = `
+        <table class="scores-table">
+            <thead>
+                <tr>
+                    <th>Score</th>
+                    <th>Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${pastScore.map((entry) => `
+                    <tr>
+                        <td>${entry.score}</td>
+                        <td>${entry.time}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+const clearbtn = document.querySelector('.btn-clear-scores');
+clearbtn.addEventListener('click', function(){
+    localStorage.removeItem('pastScores');
+    pastScore = [];
+    displayPastScores();
+});
+
+const backbtn = document.querySelector('.btn-back');
+backbtn.addEventListener('click', function(){
+    pastScorePage.style.display = 'none';
+    if(flag){startGame.style.display = 'flex';}
+    else{gameOver.style.display = 'flex';}
 });
