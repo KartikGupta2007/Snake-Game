@@ -120,6 +120,52 @@ section{
     background-color: var(--bg-food-color);
 }
 
+/* Snake head base */
+.head{
+    position: relative;
+}
+.head::before,
+.head::after{
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #000;
+    border-radius: 50%;
+}
+.head.right::before{
+    top: 30%;
+    left: 60%;
+}
+.head.right::after{
+    top: 60%;
+    left: 60%;
+}
+
+.head.left::before{
+    top: 30%;
+    left: 15%;
+}
+.head.left::after{
+    top: 60%;
+    left: 15%;
+}
+.head.up::before{
+    top: 15%;
+    left: 30%;
+}
+.head.up::after{
+    top: 15%;
+    left: 60%;
+}
+.head.down::before{
+    top: 60%;
+    left: 30%;
+}
+.head.down::after{
+    top: 60%;
+    left: 60%;
+}
 
 .modal{
     height: 100vh;

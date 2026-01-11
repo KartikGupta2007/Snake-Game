@@ -24,12 +24,16 @@ for(let i = 0;i<rows;i++){
 
 //starting location of the snake is 0,0
 let snakeLocation = [{x: 0, y: 0}]; // pattern of array is head -----> tail 
-function drawSnake(){
+function drawSnake(direction){
     Object.values(blocksArr).forEach(function(block){
         block.classList.remove('fill');
+        block.classList.remove('head','up','down','left','right');
     });
-    snakeLocation.forEach(function(block){
+    snakeLocation.forEach(function(block, index){
         blocksArr[`${block.x}-${block.y}`].classList.add('fill');
+        if(index === 0){
+            blocksArr[`${block.x}-${block.y}`].classList.add('head',direction);
+        }
     })
 };
 drawSnake();
@@ -43,6 +47,12 @@ blocksArr[`${food.x}-${food.y}`].classList.add('food');
 function createFood(){
     blocksArr[`${food.x}-${food.y}`].classList.remove('food');
     food = {x:Math.floor(Math.random()*rows),y:Math.floor(Math.random()*cols)};
+    // Ensure food does not spawn on the snake
+    while(snakeLocation.some(function(segment){
+        return segment.x === food.x && segment.y === food.y;
+    })){
+        food = {x:Math.floor(Math.random()*rows),y:Math.floor(Math.random()*cols)};
+    }
     blocksArr[`${food.x}-${food.y}`].classList.add('food');
 }
 
@@ -108,7 +118,7 @@ let x = function(){
         snakeLocation.pop();
         snakeLocation.unshift(head);
     }
-    drawSnake();
+    drawSnake(direction);
 },200)};
 
 //timer feature
