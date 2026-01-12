@@ -1,4 +1,5 @@
 let flag = true;
+let isGameRunning = false;
 const board = document.querySelector('.Board-Container');
 const blockHeight = 48;
 const blockWidth = 48;
@@ -7,6 +8,25 @@ let maxScoreValue = localStorage.getItem('maxScore') || 0;
 const score = document.querySelector('.Current-Score-Value');
 const maxScore = document.querySelector('.Max-Score-Value');
 maxScore.innerText = maxScoreValue;
+
+// Surprise message feature!!!
+const surpriseMsg = document.createElement('div');
+surpriseMsg.classList.add('surprise-message');
+board.parentElement.prepend(surpriseMsg);
+
+function updateSurpriseMessage() {
+    if (maxScoreValue < 100) {
+        surpriseMsg.innerText = 'Score 100 to get a surprise 🎁';
+    } else if (maxScoreValue >= 100 && maxScoreValue < 200) {
+        surpriseMsg.innerText = 'Score 200 to get a bigger surprise 🎉';
+    } else if (maxScoreValue >= 200 && maxScoreValue < 300) {
+        surpriseMsg.innerText = 'Score 300 to unlock the final surprise 🚀';
+    } else {
+        surpriseMsg.innerText = 'You have unlocked all surprises! 🏆 Congratulations!!';
+    }
+}
+
+updateSurpriseMessage();
 
 // Reload page when window width changes
 let windowWidth = window.innerWidth;
@@ -31,19 +51,24 @@ for(let i = 0;i<rows;i++){
 
 //starting location of the snake is 0,0
 let snakeLocation = [{x: 0, y: 0}]; // pattern of array is head -----> tail 
-function drawSnake(direction){
+function drawSnake(direction,color){
     Object.values(blocksArr).forEach(function(block){
         block.classList.remove('fill');
-        block.classList.remove('head','up','down','left','right');
+        block.classList.remove('head','up','down','left','right','above-100','above-200','above-300');
     });
     snakeLocation.forEach(function(block, index){
         blocksArr[`${block.x}-${block.y}`].classList.add('fill');
         if(index === 0){
             blocksArr[`${block.x}-${block.y}`].classList.add('head',direction);
         }
+        else{
+            if(color !== ''){
+                blocksArr[`${block.x}-${block.y}`].classList.add(color);
+            }
+        }
     })
 };
-drawSnake();
+drawSnake('right','');
 
 
 //creating food at random location
@@ -88,6 +113,7 @@ let gameInterval = null;
 let x = function(){
     gameInterval = setInterval(function(){
     let head = null;
+    isGameRunning = true;
     if(direction === 'right'){
         head =  {x:(snakeLocation[0].x),y:((snakeLocation[0].y)+1)%cols};
     }
@@ -119,6 +145,7 @@ let x = function(){
             maxScoreValue = scorecount;
             maxScore.innerText = scorecount;
             localStorage.setItem('maxScore', scorecount.toString());
+            updateSurpriseMessage();
         }
         snakeLocation.unshift(head);
         createFood();
@@ -127,8 +154,30 @@ let x = function(){
         snakeLocation.pop();
         snakeLocation.unshift(head);
     }
-    drawSnake(direction);
+    let snakeColorClass = '';
+    if(maxScoreValue>=300){
+        snakeColorClass = 'above-300';
+    }
+    else if(maxScoreValue>200){
+        snakeColorClass = 'above-200';
+    }
+    else if(maxScoreValue>=100){
+        snakeColorClass = 'above-100';
+    }
+    else{
+        snakeColorClass = '';
+    }
+    drawSnake(direction,snakeColorClass);
 },200)};
+
+//if the user reloads the page while game is running
+window.addEventListener('beforeunload', function (event) {
+    if(isGameRunning){
+        addPastScore(scorecount);
+        end();
+        return;
+    }
+});
 
 //timer feature
 //start game feature
@@ -260,6 +309,10 @@ function displayPastScores(){
 
 const clearbtn = document.querySelector('.btn-clear-scores');
 clearbtn.addEventListener('click', function(){
+    maxScoreValue = 0;
+    maxScore.innerText = maxScoreValue;
+    localStorage.setItem('maxScore', '0');
+    updateSurpriseMessage();
     localStorage.removeItem('pastScores');
     pastScore = [];
     displayPastScores();

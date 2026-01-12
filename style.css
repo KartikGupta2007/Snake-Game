@@ -13,6 +13,9 @@ html,body{
     --bg-primary-color: #0c0c0c;
     --bg-fill-color: #fdfdfc;
     --bg-food-color: #ff6347;
+    --bg-score-above-100-color:#00ff88;
+    --bg-score-above-200-color:#00b3ff;
+    --bg-score-above-300-color:#ff3b3b;
     /* Text colors */
     --text-primary-color: #f0f0f0;
 
@@ -292,4 +295,26 @@ section{
     gap: var(--space-md);
     flex-wrap: wrap;
     justify-content: center;
+}
+
+.above-100{
+    background-color: var(--bg-score-above-100-color);
+}
+.above-200{
+    background-color: var(--bg-score-above-200-color);
+}
+.above-300{
+    background-color: var(--bg-score-above-300-color);
+}
+
+.surprise-message{
+    text-align: center;
+    font-size: var(--size-sm);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--border-primary-color);
+    color: var(--text-primary-color);
+    border: var(--space-xxxs) solid var(--border-primary-color);
 }
