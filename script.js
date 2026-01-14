@@ -94,19 +94,19 @@ let direction = 'right';
 let directionChanged = false; // Only allow one direction change per tick
 document.addEventListener('keydown',function(event){
     if(directionChanged) return; // Ignore inputs after first valid change this tick
-    if(event.key === 'ArrowRight' && direction !== 'left'){
+    if((event.key === 'ArrowRight' || event.key === 'D' || event.key === 'd') && direction !== 'left'){
         direction = 'right';
         directionChanged = true;
     }
-    else if(event.key === 'ArrowLeft' && direction !== 'right'){
+    else if((event.key === 'ArrowLeft' || event.key === 'A' || event.key === 'a') && direction !== 'right'){
         direction = 'left';
         directionChanged = true;
     }
-    else if(event.key === 'ArrowUp' && direction !== 'down'){
+    else if((event.key === 'ArrowUp' || event.key === 'W' || event.key === 'w') && direction !== 'down'){
         direction = 'up';
         directionChanged = true;
     }
-    else if(event.key === 'ArrowDown' && direction !== 'up'){
+    else if((event.key === 'ArrowDown' || event.key === 'S' || event.key === 's') && direction !== 'up'){
         direction = 'down';
         directionChanged = true;
     }
