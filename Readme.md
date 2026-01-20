@@ -2,7 +2,11 @@
 
 ![Snake Game](assets/Image.png)
 
-## � Project Details
+## 🎥 Video Demonstration
+
+**[Watch the Full Project Demo (8-9 mins)](https://drive.google.com/file/d/19XKlzR_VwgmhmtGdRJuTOeNuOzWyJE9j/view?usp=sharing)** 🎬
+
+## 📋 Project Details
 
 **Submission by:** Kartik Gupta  
 **Roll No:** 25BCS10035  
@@ -15,7 +19,7 @@ An enhanced Snake Game built with vanilla JavaScript, HTML, and CSS featuring pr
 
 ## ✨ Features
 
-- **Progressive Difficulty**: Speed increases every 10 seconds (200ms → 80ms)
+- **Progressive Difficulty**: Speed increases every 15 seconds (200ms → 80ms)
 - **Visual Rewards**: Snake color changes at 100/200/300 points, rainbow animation at 600+ points
 - **Score Tracking**: Current score, max score (localStorage), and last 10 games with timestamps
 - **Responsive Grid**: Dynamic 48x48px grid with edge wrapping
@@ -52,14 +56,15 @@ An enhanced Snake Game built with vanilla JavaScript, HTML, and CSS featuring pr
 ```
 Snake-Game/
 │
-├── assets/            # Image assets folder
-│   ├── food.png       # Food item image asset
-│   ├── favicon.png    # Browser tab icon
-│   └── Image.png      # Project screenshot
-├── index.html         # Main HTML file with game structure and modals
-├── script.js          # Game logic, state management, and event handlers (369 lines)
-├── style.css          # Comprehensive styling with CSS variables (346 lines)
-└── Readme.md          # Project documentation
+├── assets/                           # Image assets folder
+│   ├── food.png                      # Food item image asset
+│   ├── favicon.png                   # Browser tab icon
+│   ├── Image.png                     # Project screenshot
+│   ├── Demo Vedio Recording.mov      # Project demo video
+├── index.html                        # Main HTML file with game structure and modals
+├── script.js                         # Game logic, state management, and event handlers (369 lines)
+├── style.css                         # Comprehensive styling with CSS variables (346 lines)
+└── Readme.md                         # Project documentation
 ```
 
 ## 🎨 Key Implementation
