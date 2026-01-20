@@ -4,7 +4,7 @@ const board = document.querySelector('.Board-Container');
 const blockHeight = 48;
 const blockWidth = 48;
 let scorecount = 0;
-let maxScoreValue = localStorage.getItem('maxScore') || 0;
+let maxScoreValue = parseInt(localStorage.getItem('maxScore')) || 0;
 const score = document.querySelector('.Current-Score-Value');
 const maxScore = document.querySelector('.Max-Score-Value');
 maxScore.innerText = maxScoreValue;
@@ -20,8 +20,10 @@ function updateSurpriseMessage() {
     } else if (maxScoreValue >= 100 && maxScoreValue < 200) {
         surpriseMsg.innerText = 'Score 200 to get a bigger surprise 🎉';
     } else if (maxScoreValue >= 200 && maxScoreValue < 300) {
-        surpriseMsg.innerText = 'Score 300 to unlock the final surprise 🚀';
-    } else {
+        surpriseMsg.innerText = 'You are unstoppable! Can you reach 300? 🚀';
+    } else if(maxScoreValue >= 300 && maxScoreValue < 600){
+        surpriseMsg.innerText = 'You are a pro! Keep going for final Surprise at 600! 🌟';
+    }else {
         surpriseMsg.innerText = 'You have unlocked all surprises! 🏆 Congratulations!!';
     }
 }
@@ -54,7 +56,7 @@ let snakeLocation = [{x: 0, y: 0}]; // pattern of array is head -----> tail
 function drawSnake(direction,color){
     Object.values(blocksArr).forEach(function(block){
         block.classList.remove('fill');
-        block.classList.remove('head','up','down','left','right','above-100','above-200','above-300');
+        block.classList.remove('head','up','down','left','right','above-100','above-200','above-300','rainbow-snake');
     });
     snakeLocation.forEach(function(block, index){
         blocksArr[`${block.x}-${block.y}`].classList.add('fill');
@@ -115,6 +117,11 @@ document.addEventListener('keydown',function(event){
 
 //moving the snake after every 500ms!!!
 let gameInterval = null;
+let currentSpeed = 200; // Initial speed in milliseconds
+let speedIncreaseInterval = null;
+const SPEED_INCREASE_TIME = 15000; // Increase speed every 15 seconds
+const SPEED_DECREASE_AMOUNT = 20; // Decrease interval by 20ms each time
+const MIN_SPEED = 80; // Minimum speed (maximum difficulty)
 
 let x = function(){
     gameInterval = setInterval(function(){
@@ -162,7 +169,10 @@ let x = function(){
     }
     directionChanged = false; // Allow new input for next tick
     let snakeColorClass = '';
-    if(maxScoreValue>=300){
+    if(maxScoreValue>=600){
+        snakeColorClass = 'rainbow-snake';
+    }
+    else if(maxScoreValue>=300){
         snakeColorClass = 'above-300';
     }
     else if(maxScoreValue>=200){
@@ -175,7 +185,7 @@ let x = function(){
         snakeColorClass = '';
     }
     drawSnake(direction,snakeColorClass);
-},200)};
+},currentSpeed)};
 
 //if the user reloads the page while game is running
 window.addEventListener('beforeunload', function (event) {
@@ -197,6 +207,18 @@ startButton.addEventListener('click',function(){
     startGame.style.display = 'none';
     modal.style.display = 'none';
     timer.innerText = `00:00`;
+    currentSpeed = 200; // Reset speed to initial value
+    
+    // Start speed increase interval
+    speedIncreaseInterval = setInterval(function(){
+        if(currentSpeed > MIN_SPEED){
+            currentSpeed -= SPEED_DECREASE_AMOUNT;
+            // Restart game loop with new speed
+            clearInterval(gameInterval);
+            x();
+        }
+    }, SPEED_INCREASE_TIME);
+    
     timeIntervalId = setInterval(function(){
         let [mins,secs] = timer.innerText.split(':').map(Number);
         if(secs === 59){
@@ -222,6 +244,7 @@ gameOver.style.display = 'none';
 function end(){
     timer.innerText =`00:00`;
     clearInterval(timeIntervalId);
+    clearInterval(speedIncreaseInterval); // Clear speed increase interval
     finalScore.innerText = scorecount;
     clearInterval(gameInterval);
     scorecount = 0;
@@ -240,6 +263,18 @@ restartButton.addEventListener('click',function(){
     drawSnake();
     createFood();
     timer.innerText = `00:00`;
+    currentSpeed = 200; // Reset speed to initial value
+    
+    // Start speed increase interval
+    speedIncreaseInterval = setInterval(function(){
+        if(currentSpeed > MIN_SPEED){
+            currentSpeed -= SPEED_DECREASE_AMOUNT;
+            // Restart game loop with new speed
+            clearInterval(gameInterval);
+            x();
+        }
+    }, SPEED_INCREASE_TIME);
+    
     timeIntervalId = setInterval(function(){
         let [mins,secs] = timer.innerText.split(':').map(Number);
         if(secs === 59){

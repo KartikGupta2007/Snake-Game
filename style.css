@@ -12,7 +12,7 @@ html,body{
     /* background colors; */
     --bg-primary-color: #0c0c0c;
     --bg-fill-color: #fdfdfc;
-    --bg-food-color: #ff6347;
+    --bg-food-color: #ffb703;
     --bg-score-above-100-color:#00ff88;
     --bg-score-above-200-color:#00b3ff;
     --bg-score-above-300-color:#8b5cf6;
@@ -120,7 +120,11 @@ section{
 }
 
 .food{
-    background-color: var(--bg-food-color);
+    background-image: url("./assets/food.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0 0 8px rgba(255, 183, 3, 0.8));
 }
 
 /* Snake head base */
@@ -305,6 +309,28 @@ section{
 }
 .above-300{
     background-color: var(--bg-score-above-300-color);
+}
+
+.rainbow-snake {
+    background: linear-gradient(
+        90deg,
+        #ff005d,
+        #ff9f00,
+        #ffee00,
+        #00ff88,
+        #00cfff,
+        #7a5cff,
+        #ff00ff
+    );
+    background-size: 400% 400%;
+    animation: rainbow 3s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes rainbow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .surprise-message{
